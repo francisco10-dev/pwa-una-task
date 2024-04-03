@@ -1,0 +1,23 @@
+.bg-primary-una{
+    background-color: #2A3759;
+}
+.centered-image{
+    max-width: 50%;
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+}
+body{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f4f4f4;
+}
+main{
+    flex: 1;
+}
+.task-item{
+    background-color: #fff;
+    border-radius: 5px;
+    margin-bottom: 0.4em;
+}

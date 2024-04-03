@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>UNA Task</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <link href="css/styles.css" rel="stylesheet">
+       <!--Link del manifiesto JSON--> 
+        <link rel="manifest" href="manifest.json">
+    </head>
+    <body>
+        <header class="bg-primary-una text-white py-3">
+            <img src="img/imagen1.png" class="img-fluid centered-image">
+            <div class="container text-center">
+                <h2>Mis tareas</h2>
+            </div>
+        </header>
+        <main class="container flex-grow-1">
+            <section class="mt-2 mb-4">
+                <div class="input-group">
+                    <input type="text" id="new-task" class="form-control" 
+                        placeholder="Agregar nueva tarea"/>
+                    <button id="add-task-button" class="btn btn-primary">
+                        <i class='bx bxs-alarm-add fs-1' ></i></button>
+                </div>
+            </section>
+            <section>
+                <!--ELEMENTOS DINAMICOS DE LA APP-->
+            </section>
+
+        </main>
+        <footer class="bg-primary-una text-white py-3">
+            <div class="container text-center">
+                <p>&copy;2024 Universidad Nacional</p>
+            </div>
+        </footer>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="js/app.js"></script>
+    </body>
+</html>

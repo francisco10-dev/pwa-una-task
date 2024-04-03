@@ -1,0 +1,31 @@
+{
+    "short_name": "UNA Task",
+    "name": "Sistema de control de tareas",
+    "start_url": "index.html",
+    "background_color": "#2A3759",
+    "theme_color": "#2A3759",
+    "display": "standalone",
+    "orientation": "portrait",
+    "icons": [
+        {
+            "src": "img/icon-16x16.png",
+            "type": "img/png",
+            "sizes":"16x16"
+        },
+        {
+            "src": "img/icon-32x32.png",
+            "type": "img/png",
+            "sizes":"32x32"
+        },
+        {
+            "src": "img/icon-150x150.png",
+            "type": "img/png",
+            "sizes":"150x150"
+        },
+        {
+            "src": "img/icon-192x192.png",
+            "type": "img/png",
+            "sizes":"192x192"
+        }
+    ]
+}

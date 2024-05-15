@@ -21,3 +21,51 @@ main{
     border-radius: 5px;
     margin-bottom: 0.4em;
 }
+
+/*Modal*/
+.modal{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0,0, 0.45);
+}
+.modal-content{
+    width: 95%;
+    max-width: 500px;
+    padding: 20px;
+    position: relative;
+    background: white;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+.modal-btn-closed{
+    position: absolute;
+    top:5px;
+    right: 3px;
+    background: none;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+.modal-title{
+    text-align: center;
+    font-size: 1.7em;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

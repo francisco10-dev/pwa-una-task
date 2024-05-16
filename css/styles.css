@@ -55,8 +55,19 @@ main{
     text-align: center;
     font-size: 1.7em;
 }
+.modal-transform{
+    animation: transform-md 1s;
+}
 
-
+@keyframes transform-md{
+    from{
+        transform: scale(0);
+        opacity: 0;
+    }to{
+        transform: scale(1);
+        opacity: 1;
+    }
+}
 
 
 

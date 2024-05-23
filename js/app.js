@@ -76,5 +76,6 @@ window.onload=(e)=>{
     //Metodo que verifique el token
     //Si existe el token, cargamos las tareas
     //Si no exite, debemos crear un modal (sin que cierre) solicitando el inicio de sesión 
+    
     console.log(getTasks());
 }

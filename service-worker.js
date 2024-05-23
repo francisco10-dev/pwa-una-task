@@ -1,3 +1,5 @@
+importScripts('https://cdnjs.cloudflare.com/ajax/libs/pouchdb/8.0.1/pouchdb.min.js')
+importScripts('js/sw-db.js')
 const CACHE_STATIC_NAME='sw-una-task-static-v1';
 const CACHE_DYNAMIC_NAME='sw-una-task-dynamic-v1';
 const CACHE_INMUTABLE_NAME='sw-una-task-inmutable-v1';
@@ -17,7 +19,10 @@ self.addEventListener('install',event=>{
             ]);
         });
     const cacheInmutableProm=caches.open(CACHE_INMUTABLE_NAME)
-        .then(cache=>cache.add('https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'));
+        .then(cache=>cache.addAll([
+            'https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css',
+            'https://cdnjs.cloudflare.com/ajax/libs/pouchdb/8.0.1/pouchdb.min.js'
+        ]));
     event.waitUntil(Promise.all([
         cacheStaticProm,
         cacheInmutableProm
@@ -30,6 +35,10 @@ self.addEventListener('sync',event=>{
     // console.log("Tenemos conexión a Internet!");
     // console.log(event);
     // console.log(event.tag);
+    console.log("Online.....")
+    if(event.tag==='new-mutation'){
+        event.waitUntil(syncOnline())
+    }
 });
 self.addEventListener('push',event=>{
     console.log("Notificación recibida");
@@ -64,7 +73,26 @@ self.addEventListener('fetch',event=>{
     // event.respondWith(resp);
 
     //ESTRATEGIA 3: NETWORK WITH CACHE FALLBACK
-    const resp=fetch(event.request)
+    let resp;
+    if(event.request.method==='POST'){
+        if(self.registration.sync && !navigator.onLine){
+            resp=event.request.clone().text().then(body=>{
+                const bodyObj=JSON.parse(body)
+                if(bodyObj.query.includes('mutation')){
+                    return saveOnLocal(bodyObj)
+                    console.log("Offline mutation")
+                }else{
+                    //Queries, es decir, buscarla en cache
+                    const newResp={ok:false,offline:true}
+                    return new Response(JSON.stringify(newResp))
+                }                
+            })
+
+        }else{
+            resp=fetch(event.request)
+        }
+    }else{
+        resp=fetch(event.request)
         .then(res=>{
             if(!res){
                 return caches.match(event.request);
@@ -79,6 +107,7 @@ self.addEventListener('fetch',event=>{
         }).catch(err=>{
             return caches.match(event.request);
         });
+    }    
     event.respondWith(resp);
 
     //ESTRATEGIA 4: NETWORK & CACHE RACE

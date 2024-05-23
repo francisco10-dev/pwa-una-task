@@ -75,6 +75,15 @@ self.addEventListener('fetch',event=>{
     //ESTRATEGIA 3: NETWORK WITH CACHE FALLBACK
     let resp;
     if(event.request.method==='POST'){
+        /**
+         * si se encuentra en linea y la petición es una query entonces:
+         *      se debe hacer la petición y manejar la respuesta para almacenar el JSON
+         *      en cache y luego retornar un clone de la respuesta
+         * Si se esta offline se debe ir a buscar al cache ese JSON y retornar una nueva
+         * respuesta con el JSON
+         * Se debe tener cuidado con la QUERY a la que se está haciendo la petición
+         * principalmente a la hora de guardar y recuperar del cache
+         */
         if(self.registration.sync && !navigator.onLine){
             resp=event.request.clone().text().then(body=>{
                 const bodyObj=JSON.parse(body)

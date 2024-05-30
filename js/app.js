@@ -71,11 +71,23 @@ const createModal=(content="")=>{
         alert("Tarea creada")
     }
 }
+function notifications(){
+    if(window.Notification){
+        if(Notification.permission==='default'){
+            Notification.requestPermission((permission)=>{
+                console.log(permission)
+            })
+        }
+    }
+}
 
 window.onload=(e)=>{
     //Metodo que verifique el token
     //Si existe el token, cargamos las tareas
-    //Si no exite, debemos crear un modal (sin que cierre) solicitando el inicio de sesión 
-    
+    //Si no exite, debemos crear un modal (sin que cierre) solicitando el inicio de sesión     
     console.log(getTasks());
+    notifications()
+    //llamar al metodo de subcripción
+    newTaskSubscription()
+
 }

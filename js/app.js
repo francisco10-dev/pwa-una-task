@@ -44,7 +44,7 @@ const createModal=(content="")=>{
         <div class="modal" id="modal">
             <div class="modal-content modal-transform">
                 ${content}
-                <button id="btn-close-modal" class="modal-btn-closed">x</button>
+                <button class="modal-btn-close" id="btn-close-modal" >x</button>
             </div>
         </div>
     `;
@@ -68,7 +68,6 @@ const createModal=(content="")=>{
         console.log(name);
         createTask(name,deadline,capture);
         deleteModal();
-        alert("Tarea creada")
     }
 }
 function notifications(){
@@ -81,13 +80,48 @@ function notifications(){
     }
 }
 
+function handleAccess(){
+    const token = localStorage.getItem("token");
+    const mainContent = document.getElementById("main-content");
+    const loginBox = document.getElementById("login");
+    const loginForm = document.getElementById("login-form");
+    loginBox.style.display = 'none';
+
+    if(!token){
+        mainContent.style.display = 'none';
+        loginBox.style.display = 'flex';
+        loginForm.addEventListener("submit", login);
+    }
+
+    async function login(event) {
+        event.preventDefault();
+        const data = new FormData(event.target);
+        const email = data.get("email");
+        const password = data.get("password");
+        const json = {
+            email: email, 
+            password, password
+        }
+        const response = await fetchLogin(json);
+        if(response.status === 200){
+            const result = await response.json();
+            localStorage.setItem("token", result.token);
+            loginBox.style.display = 'none';
+            mainContent.style.display = "flex";
+        }else if(response.status === 401){
+            alert("Credenciales incorrectas");
+        }
+    }    
+}
+
 window.onload=(e)=>{
     //Metodo que verifique el token
     //Si existe el token, cargamos las tareas
     //Si no exite, debemos crear un modal (sin que cierre) solicitando el inicio de sesión     
     console.log(getTasks());
-    notifications()
+    handleAccess();
+    notifications();
     //llamar al metodo de subcripción
-    newTaskSubscription()
+    newTaskSubscription();
 
 }

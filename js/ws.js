@@ -1,4 +1,4 @@
-const wsAPI='ws://localhost:9000/graphql'
+const wsAPI='ws://localhost:9001/graphql'
 accessToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhQXN4ZXFzZXJmc2QiLCJlbWFpbCI6ImVkZGllckB1bmEuY3IiLCJuYW1lIjoiRWRkaWVyIiwiaWF0IjoxNzE1ODE5NDY5fQ.ASo1uQWXgNdLubpvbBKbs5loYhQIaHkN2t9TxT_ehhc"
 
 const newTaskSubscription=()=>{
@@ -40,6 +40,10 @@ const newTaskSubscription=()=>{
                 }
             })
             websocket.send(msg)
+        }else if(data.type === 'next'){
+           // console.log(data.payload.data.newTask);
+            //const notification = new Notification(`Nueva tarea creada: ${data.payload.data.newTask.name}`);
+            //return notification;
         }
     }
 }

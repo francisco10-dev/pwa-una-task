@@ -5,6 +5,27 @@ const CACHE_DYNAMIC_NAME='sw-una-task-dynamic-v1';
 const CACHE_INMUTABLE_NAME='sw-una-task-inmutable-v1';
 const CACHE_LIMIT=200;
 
+const apiKeys = {
+    publicKey: 'BIze4x_-5Nn3IuaVockuL5f-IY_wENsDE-Vhtdwg6UckIF5hKN5zyTCEtBlBT5rFXEw3aSSkEplX1Va92GW8mg4',
+    privateKey: '7V6E8__csB8ldCTfschXm9HotqiXy1leAtEBITGdro4'
+};
+
+const urlBase64ToUint8Array = base64String => {
+    const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+    const base64 = (base64String + padding)
+        .replace(/\-/g, '+')
+        .replace(/_/g, '/');
+
+    const rawData = atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+
+    for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+
+    return outputArray;
+}
+
 self.addEventListener('install',event=>{
     console.log("Service worker en instalación");
     const cacheStaticProm= caches.open(CACHE_STATIC_NAME)
@@ -28,8 +49,15 @@ self.addEventListener('install',event=>{
         cacheInmutableProm
     ]));
 });
-self.addEventListener('activate',event=>{
+self.addEventListener('activate', async (e) => {
     console.log("Service worker activo 2");
+    const subscription = await self.registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(apiKeys.publicKey)
+    })
+
+    const response = await saveSubscription(subscription)
+    console.log(response)
 });
 self.addEventListener('sync',event=>{
     // console.log("Tenemos conexión a Internet!");
@@ -40,10 +68,31 @@ self.addEventListener('sync',event=>{
         event.waitUntil(syncOnline())
     }
 });
-self.addEventListener('push',event=>{
-    console.log("Notificación recibida");
-    console.log(event);    
+
+const saveSubscription = async (subscription) => {
+    const response = await fetch('http://localhost:9001/save-subscription', {
+        method: 'post',
+        headers: { 'Content-type': "application/json" },
+        body: JSON.stringify(subscription)
+    });
+
+    return response.json();
+}
+
+self.addEventListener('push', event => {
+    const data = event.data.json();
+    console.log('Notificación recibida', data);
+    const options = {
+        body: data.body,
+    };
+    event.waitUntil(
+        self.registration.showNotification(data.title, options)
+    );
+    if(navigator.vibrate){
+        navigator.vibrate([2000,1000,3000]);
+    }
 });
+
 self.addEventListener('fetch',event=>{
     // console.log(event.request);
     // if(event.request.url.includes('boxicons')){
@@ -89,8 +138,10 @@ self.addEventListener('fetch',event=>{
                 const bodyObj=JSON.parse(body)
                 if(bodyObj.query.includes('mutation')){
                     return saveOnLocal(bodyObj)
-                    console.log("Offline mutation")
-                }else{
+                }else if(bodyObj.query.includes('tasks')){
+                    return caches.match("tasks");
+                }
+                else{
                     //Queries, es decir, buscarla en cache
                     const newResp={ok:false,offline:true}
                     return new Response(JSON.stringify(newResp))
@@ -98,10 +149,24 @@ self.addEventListener('fetch',event=>{
             })
 
         }else{
-            resp=fetch(event.request)
+            resp = fetch(event.request).then(async respObj => {
+                const respClone = respObj.clone();
+                console.log("Datos recibidos con conexión");
+                //console.log(await respClone.json());
+                const data = await respClone.clone().json();
+                if(data.data.tasks){
+                    console.log("La query respondió con una colección de tareas.");
+                    caches.open(CACHE_DYNAMIC_NAME).then(cache => {
+                        cache.put("tasks", respClone);
+                        clearCache(CACHE_DYNAMIC_NAME, CACHE_LIMIT);
+                    });
+                }
+                return respObj;
+            });
+            
         }
     }else{
-        resp=fetch(event.request)
+        resp = fetch(event.request)
         .then(res=>{
             if(!res){
                 return caches.match(event.request);

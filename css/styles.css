@@ -7,22 +7,24 @@
     display: block;
     margin: 0 auto;
 }
-body{
+
+main{
+    flex: 1;
+}
+
+.main-content{
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     background-color: #f4f4f4;
 }
-main{
-    flex: 1;
-}
+
 .task-item{
     background-color: #fff;
     border-radius: 5px;
     margin-bottom: 0.4em;
 }
 
-/*Modal*/
 .modal{
     width: 100vw;
     height: 100vh;
@@ -32,8 +34,9 @@ main{
     position: fixed;
     top: 0;
     left: 0;
-    background: rgba(0, 0,0, 0.45);
+    background: rgb(0, 0,0,0.45);
 }
+
 .modal-content{
     width: 95%;
     max-width: 500px;
@@ -43,23 +46,26 @@ main{
     border-radius: 5px;
     box-sizing: border-box;
 }
-.modal-btn-closed{
+
+.modal-btn-close{
     position: absolute;
-    top:5px;
+    top: 5px;
     right: 3px;
     background: none;
-    font-size: 1.2em;
+    font-size: 1.5rem;
     cursor: pointer;
 }
+
 .modal-title{
     text-align: center;
-    font-size: 1.7em;
-}
-.modal-transform{
-    animation: transform-md 1s;
+    font-size: 1-7rem;
 }
 
-@keyframes transform-md{
+.modal-transform{
+    animation: transform 1s;
+}
+
+@keyframes transform {
     from{
         transform: scale(0);
         opacity: 0;
@@ -69,14 +75,41 @@ main{
     }
 }
 
+.login{
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
 
-
-
-
-
-
-
-
-
-
-
+.login-container {
+    background-color: #2C3E50;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+.login-container img {
+    width: 200px;
+}
+.login-container h2 {
+    color: white;
+    margin: 20px 0;
+}
+.form-control, span, #add-task-button {
+    margin: 10px 0;
+}
+.btn-custom {
+    background-color: #2980B9;
+    color: white;
+    width: 100%;
+}
+.btn-custom:hover {
+    background-color: #1ABC9C;
+}
+.login-container p {
+    color: white;
+    margin-top: 20px;
+}

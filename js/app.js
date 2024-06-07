@@ -1,5 +1,5 @@
 let url=window.location.href;
-let swLoc="/pwa-una-task/service-worker.js";
+let swLoc="/service-worker.js";
 if(navigator.serviceWorker){
     if(url.includes('localhost') || url.includes('127.0.0.1')){
         swLoc='/service-worker.js';

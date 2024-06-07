@@ -1,6 +1,7 @@
 const db=new PouchDB('offline_data')
-const Authorization="Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhQXN4ZXFzZXJmc2QiLCJlbWFpbCI6ImVkZGllckB1bmEuY3IiLCJuYW1lIjoiRWRkaWVyIiwiaWF0IjoxNzE1ODE5NDY5fQ.ASo1uQWXgNdLubpvbBKbs5loYhQIaHkN2t9TxT_ehhc";
-const urlAPI="http://localhost:9000/graphql"
+const token = localStorage.getItem("token");
+const Authorization=`Bearer ${token}`;
+const urlAPI="https://una-task-api.onrender.com/graphql"
 
 function saveOnLocal(data){
     data._id=new Date().toISOString();

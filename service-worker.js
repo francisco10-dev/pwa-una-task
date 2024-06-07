@@ -70,7 +70,7 @@ self.addEventListener('sync',event=>{
 });
 
 const saveSubscription = async (subscription) => {
-    const response = await fetch('http://localhost:9001/save-subscription', {
+    const response = await fetch('https://una-task-api.onrender.com/save-subscription', {
         method: 'post',
         headers: { 'Content-type': "application/json" },
         body: JSON.stringify(subscription)
@@ -78,6 +78,8 @@ const saveSubscription = async (subscription) => {
 
     return response.json();
 }
+
+
 
 self.addEventListener('push', event => {
     const data = event.data.json();
@@ -154,6 +156,9 @@ self.addEventListener('fetch',event=>{
                 console.log("Datos recibidos con conexión");
                 //console.log(await respClone.json());
                 const data = await respClone.clone().json();
+                if(data.token){
+                    return respObj;
+                }
                 if(data.data.tasks){
                     console.log("La query respondió con una colección de tareas.");
                     caches.open(CACHE_DYNAMIC_NAME).then(cache => {

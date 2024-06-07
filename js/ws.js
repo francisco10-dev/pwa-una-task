@@ -1,4 +1,4 @@
-const wsAPI='ws://localhost:9001/graphql'
+const wsAPI = 'wss://una-task-api.onrender.com/graphql';
 accessToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhQXN4ZXFzZXJmc2QiLCJlbWFpbCI6ImVkZGllckB1bmEuY3IiLCJuYW1lIjoiRWRkaWVyIiwiaWF0IjoxNzE1ODE5NDY5fQ.ASo1uQWXgNdLubpvbBKbs5loYhQIaHkN2t9TxT_ehhc"
 
 const newTaskSubscription=()=>{
